@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "currency-exchange"
+version = "0.1.0"
+description = "Currency exchange API"
+authors = ["EgorFurman"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.6"
+sqlalchemy = "^2.0.36"
+psycopg2-binary = "^2.9.10"
+pydantic = "^2.10.3"
+alembic = "^1.14.0"
+pydantic-settings = "^2.6.1"
+asyncpg = "^0.30.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
