@@ -1,0 +1,2 @@
+from app.repositories.currencies import CurrenciesRepository
+from app.repositories.exchange_rates import ExchangeRatesRepository
