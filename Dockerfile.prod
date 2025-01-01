@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir poetry
 
 # Создаем рабочего пользователя и директории
 RUN adduser -D user
-RUN mkdir -p /opt /run && chmod 777 /opt /run
+RUN mkdir -p /opt /run /user && chmod 775 /opt /run && chown -R user:user /user
 
 WORKDIR /user
 
