@@ -27,7 +27,7 @@ services:
     frontend:
       build:
         context: .
-        dockerfile: Dockerfile.frontend
+        dockerfile: frontend/Dockerfile.frontend
       container_name: react_app
       restart: always
       ports:
