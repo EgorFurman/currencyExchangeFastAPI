@@ -1,5 +1,6 @@
 import logging
 
+from pydantic import ValidationError
 from sqlalchemy.exc import OperationalError, IntegrityError
 from sqlalchemy.orm.exc import UnmappedInstanceError
 
@@ -24,15 +25,16 @@ class DBService:
 
     async def get_currency(self, code: str) -> schemas.CurrencyIDSchema:
         try:
-            logger.debug(f'Getting currency with {code} from {self._currencies_repo}')
+            logger.debug(f'Getting currency with code {code} from {self._currencies_repo}')
             currency = await self._execute_method(self._currencies_repo.read_by_code, code=code)
-
-            if currency is None:
-                logger.debug(f'Currency with {code} not found')
-                raise exceptions.CurrencyNotFoundError(code)
 
             logger.debug(f'Currency with {code} found')
             return schemas.CurrencyIDSchema.model_validate(currency)
+
+        except ValidationError:
+            logger.debug(f'Currency with {code} not found')
+            raise exceptions.CurrencyNotFoundError(code)
+
         except Exception as e:
             logger.error(
                 f'Error for getting currency: {e} with {code} from {self._currencies_repo}', exc_info=True
@@ -53,7 +55,6 @@ class DBService:
         try:
             logger.debug(f'Getting currencies from {self._currencies_repo}')
             currencies = await self._execute_method(self._currencies_repo.list)
-            logger.error(f'some error')
 
             logger.debug(f'Currencies from {self._currencies_repo} successfully retrieved')
             return [schemas.CurrencyIDSchema.model_validate(currency) for currency in currencies]
@@ -71,7 +72,7 @@ class DBService:
     async def add_currency(self, schema: schemas.CurrencySchema) -> schemas.CurrencyIDSchema:
         try:
             logger.debug(f'Adding currency {schema.code} to {self._currencies_repo}')
-            id = await self._execute_method(self._currencies_repo.create, **schema.model_dump())
+            id = await self._execute_method(self._currencies_repo.create, values=schema.model_dump())
 
             logger.debug(f'Currency {schema.code} added to {self._currencies_repo}')
             currency = await self._execute_method(self._currencies_repo.read, id=id)
@@ -103,12 +104,13 @@ class DBService:
                 target_currency_code=target_code
             )
 
-            if rate is None:
-                logger.debug(f'Exchange rate for {base_code} to {target_code} not found')
-                raise exceptions.ExchangeRateNotFoundError(base_code=base_code, target_code=target_code)
-
             logger.debug(f'Exchange rate for {base_code} to {target_code} found')
             return schemas.ExchangeRateDetailsSchema.model_validate(rate)
+
+        except ValidationError:
+            logger.debug(f'Exchange rate for {base_code} to {target_code} not found')
+            raise exceptions.ExchangeRateNotFoundError(base_code=base_code, target_code=target_code)
+
         except Exception as e:
             logger.error(
                 f'Error for getting exchange rate: {e} from {self._exchange_rates_repo}',
@@ -129,7 +131,7 @@ class DBService:
     async def get_exchange_rates(self) -> list[schemas.ExchangeRateDetailsSchema]:
         try:
             logger.debug(f'Getting exchange rates from {self._currencies_repo}')
-            exchange_rates = await self._execute_method(self._currencies_repo.list)
+            exchange_rates = await self._execute_method(self._exchange_rates_repo.list)
 
             logger.debug(f'Exchange rates from {self._exchange_rates_repo} successfully retrieved')
             return [schemas.ExchangeRateDetailsSchema.model_validate(rate) for rate in exchange_rates]

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const host = "http://localhost:8080/currency_exchange_war_exploded"
+    const host = "http://localhost:8000"
 
     // Fetch the list of currencies and populate the select element
     function requestCurrencies() {
@@ -86,7 +86,7 @@ $(document).ready(function() {
 
     function requestExchangeRates() {
         $.ajax({
-            url: `${host}/exchangeRates`,
+            url: `${host}/exchange-rates`,
             type: "GET",
             dataType: "json",
             success: function(response) {
@@ -94,7 +94,7 @@ $(document).ready(function() {
                 tbody.empty();
                 $.each(response, function(index, rate) {
                     const row = $('<tr></tr>');
-                    const currency = rate.baseCurrency.code + rate.targetCurrency.code;
+                    const currency = rate.base_currency.code + rate.target_currency.code;
                     const exchangeRate = rate.rate;
                     row.append($('<td></td>').text(currency));
                     row.append($('<td></td>').text(exchangeRate));
@@ -139,7 +139,7 @@ $(document).ready(function() {
 
         // send values to the server with a patch request
         $.ajax({
-            url: `${host}/exchangeRate/${pair}`,
+            url: `${host}/exchange-rate/${pair}`,
             type: "PATCH",
             contentType : "application/x-www-form-urlencoded",
             data: `rate=${exchangeRate}`,
@@ -162,10 +162,25 @@ $(document).ready(function() {
     $("#add-exchange-rate").submit(function(e) {
         e.preventDefault();
 
+        const baseCurrency = $("#new-rate-base-currency").val();
+        const targetCurrency = $("#new-rate-target-currency").val();
+        const rate = $("#exchange-rate").val();
+
+        console.log({
+            base_currency_code: baseCurrency,
+            target_currency_code: targetCurrency,
+            rate: rate,
+        });
+
         $.ajax({
-            url: `${host}/exchangeRates`,
+            url: `${host}/exchange-rates`,
             type: "POST",
-            data: $("#add-exchange-rate").serialize(),
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                base_currency_code: baseCurrency,
+                target_currency_code: targetCurrency,
+                rate: rate
+            },
             success: function(data) {
                 requestExchangeRates();
             },
@@ -189,11 +204,11 @@ $(document).ready(function() {
         const amount = $("#convert-amount").val();
 
         $.ajax({
-            url: `${host}/exchange?from=${baseCurrency}&to=${targetCurrency}&amount=${amount}`,
+            url: `${host}/exchange?base=${baseCurrency}&target=${targetCurrency}&amount=${amount}`,
             type: "GET",
             // data: "$("#add-exchange-rate").serialize()",
             success: function(data) {
-                $("#convert-converted-amount").val(data.convertedAmount);
+                $("#convert-converted-amount").val(data.converted_amount);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 const error = JSON.parse(jqXHR.responseText);

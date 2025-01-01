@@ -30,7 +30,7 @@ async def post_currencies(
 ) -> schemas.CurrencyIDSchema:
     #try:
         #response = await service.add_currency(currency)
-        return await service.add_currency(currency)
+    return await service.add_currency(currency)
     #except Exception as e:
     #    print(e)
 

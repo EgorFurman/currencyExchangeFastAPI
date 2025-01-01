@@ -29,7 +29,7 @@ class ExchangeService:
             target_currency=exchange_rate.target_currency,
             rate=exchange_rate.rate,
             amount=exchange.amount,
-            converted_amount=exchange.amount * exchange_rate.rate,
+            converted_amount=round(exchange.amount * exchange_rate.rate, 2),
         )
 
     async def _try_get_inverse_convert(self, exchange: schemas.ExchangeSchema) -> schemas.ExchangeDetailsSchema:
@@ -42,7 +42,7 @@ class ExchangeService:
             target_currency=exchange_rate.target_currency,
             rate=exchange_rate.rate,
             amount=exchange.amount,
-            converted_amount=exchange.amount * (1 / exchange_rate.rate),
+            converted_amount=round(exchange.amount * (1 / exchange_rate.rate), 2),
         )
 
     async def _try_get_usd_base_convert(self, exchange: schemas.ExchangeSchema) -> schemas.ExchangeDetailsSchema:
@@ -60,7 +60,7 @@ class ExchangeService:
             target_currency=usd_to_target_rate.target_currency,
             rate=rate,
             amount=exchange.amount,
-            converted_amount=exchange.amount * rate,
+            converted_amount=round(exchange.amount * rate, 2),
         )
 
     #@staticmethod

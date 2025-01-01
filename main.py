@@ -4,6 +4,7 @@ from fastapi import FastAPI, Request, Response
 import uvicorn
 
 from app.routers import currencies, exchange_rates, exchanges
+from app.middlewares import register_middlewares
 from app.exceptions.handlers import register_exception_handlers
 
 
@@ -28,6 +29,7 @@ app.include_router(exchanges.router)
 
 
 register_exception_handlers(app)
+register_middlewares(app)
 #
 #
 #@app.get("/")
