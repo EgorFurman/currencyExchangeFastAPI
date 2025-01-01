@@ -1,0 +1,32 @@
+# Используем Python на Alpine
+FROM python:3.12.2-alpine
+
+# Отключаем кеширование bytecode и буферизацию вывода
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+ENV POETRY_VIRTUALENVS_CREATE=false
+
+# Устанавливаем базовые зависимости
+RUN apk update && apk add --no-cache gcc musl-dev postgresql-dev
+
+# Обновляем pip
+RUN python -m pip install --upgrade pip
+
+# Устанавливаем Poetry
+RUN pip install --no-cache-dir poetry
+
+RUN adduser -D -s user
+
+# Создаем рабочую директорию
+WORKDIR /user
+
+# Копируем только файлы для установки зависимостей
+COPY pyproject.toml poetry.lock /app/
+
+# Устанавливаем зависимости, исключая dev
+RUN poetry install --no-dev
+
+COPY . /user
+
+USER user

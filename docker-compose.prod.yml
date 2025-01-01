@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: fastapi_app
+    env_file:
+      - .env
+    expose:
+      - 8000
+    depends_on:
+      - db
+    #volumes:
+    #  - static_volume:/user/static
+    command: >
+          sh -c "alembic upgrade head &&
+                 poetry run uvicorn main:app --reload --port 8000"
+
+    frontend:
+      build:
+        context: .
+        dockerfile: Dockerfile.frontend
+      container_name: react_app
+      restart: always
+      ports:
+        - "80:80"
+
+volumes:
+  postgres_data:
