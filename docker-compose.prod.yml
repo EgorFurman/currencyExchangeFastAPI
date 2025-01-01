@@ -21,7 +21,7 @@ services:
     #volumes:
     #  - static_volume:/user/static
     command: >
-          sh -c "chmod -R 755 /user &&
+          sh -c "
                  alembic upgrade head &&
                  poetry run uvicorn main:app --reload --port 8000"
 
