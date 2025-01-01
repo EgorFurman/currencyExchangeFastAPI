@@ -24,14 +24,14 @@ services:
           sh -c "alembic upgrade head &&
                  poetry run uvicorn main:app --reload --port 8000"
 
-    frontend:
-      build:
-        context: .
-        dockerfile: frontend/Dockerfile.frontend
-      container_name: react_app
-      restart: always
-      ports:
-        - "80:80"
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile.frontend
+    container_name: react_app
+    restart: always
+    ports:
+      - "80:80"
 
 volumes:
   postgres_data:

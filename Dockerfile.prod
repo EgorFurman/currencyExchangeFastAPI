@@ -16,17 +16,18 @@ RUN python -m pip install --upgrade pip
 # Устанавливаем Poetry
 RUN pip install --no-cache-dir poetry
 
-RUN adduser -D -s user
-
-# Создаем рабочую директорию
+# Создаем рабочего пользователя и директории
+RUN adduser -D user
 WORKDIR /user
 
-# Копируем только файлы для установки зависимостей
-COPY pyproject.toml poetry.lock /app/
+# Копируем файлы для установки зависимостей
+COPY pyproject.toml poetry.lock /user/
 
 # Устанавливаем зависимости, исключая dev
 RUN poetry install --no-dev
 
+# Копируем всё остальное
 COPY . /user
 
+# Переключаемся на обычного пользователя
 USER user

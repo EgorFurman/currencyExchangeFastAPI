@@ -1,10 +1,12 @@
 FROM nginx:alpine
 
-# Копируем статические файлы в директорию, обслуживаемую Nginx
+# Устанавливаем рабочую директорию
 WORKDIR /usr/share/nginx/html
-COPY ./frontend /usr/share/nginx/html
 
-# Указываем порт, который Nginx будет слушать
+# Копируем статические файлы в Nginx
+COPY . .
+
+# Указываем порт для Nginx
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
