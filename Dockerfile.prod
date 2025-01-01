@@ -18,16 +18,18 @@ RUN pip install --no-cache-dir poetry
 
 # Создаем рабочего пользователя и директории
 RUN adduser -D user
+RUN mkdir -p /opt /run && chmod 777 /opt /run
+
 WORKDIR /user
 
 # Копируем файлы для установки зависимостей
-COPY pyproject.toml poetry.lock /user/
+COPY --chown=user:user pyproject.toml poetry.lock /user
 
 # Устанавливаем зависимости, исключая dev
 RUN poetry install --no-dev
 
 # Копируем всё остальное
-COPY . /user
+COPY --chown=user:user . /user
 
 # Переключаемся на обычного пользователя
 USER user
