@@ -31,6 +31,8 @@ services:
       dockerfile: frontend/Dockerfile.frontend
     container_name: react_app
     restart: always
+    depends_on:
+      backend
     ports:
       - "80:80"
 
