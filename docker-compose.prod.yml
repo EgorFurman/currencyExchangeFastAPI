@@ -14,12 +14,14 @@ services:
     container_name: fastapi_app
     env_file:
       - .env
-    expose:
-      - 8000
+    #expose:
+    #  - 8000
+    ports:
+      - "8000:8000"
     depends_on:
       - db
     #volumes:
-    #  - static_volume:/user/static
+    #  - static_volume:/frontend/static
     command: >
           sh -c "
                  alembic upgrade head &&
@@ -30,17 +32,19 @@ services:
     #  timeout: 5s
     #  retries: 5
 
-  frontend:
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile.frontend
-    container_name: react_app
-    restart: always
-    depends_on:
-      - backend
-#        condition: service_healthy
-    ports:
-      - "80:80"
+  #frontend:
+  #  build:
+  #    context: ./frontend/
+  #    dockerfile: Dockerfile.frontend
+  #  container_name: react_app
+  #  volumes:
+  #    - static_volume:
+  #  #restart: always
+  #  depends_on:
+  #    - backend
+# #       condition: service_healthy
+  #  ports:
+  #    - "80:80"
 
 volumes:
   postgres_data:
