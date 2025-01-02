@@ -24,11 +24,11 @@ services:
           sh -c "
                  alembic upgrade head &&
                  poetry run uvicorn main:app --host 0.0.0.0 --port 8000"
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8000/currencies" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    #healthcheck:
+    #  test: [ "CMD", "curl", "-f", "http://localhost:8000/currencies" ]
+    #  interval: 10s
+    #  timeout: 5s
+    #  retries: 5
 
   frontend:
     build:
