@@ -1,12 +1,14 @@
+# Используем nginx
 FROM nginx:alpine
 
-# Устанавливаем рабочую директорию
-WORKDIR /usr/share/nginx/html
+# Копируем файл конфигурации Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Копируем статические файлы в Nginx
-COPY . .
+# Копируем содержимое фронтенда
+COPY . /usr/share/nginx/html
 
-# Указываем порт для Nginx
+# Открываем порт 80
 EXPOSE 80
 
+# Запускаем Nginx
 CMD ["nginx", "-g", "daemon off;"]
