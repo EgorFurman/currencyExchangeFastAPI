@@ -37,7 +37,8 @@ services:
     container_name: react_app
     restart: always
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     ports:
       - "80:80"
 
