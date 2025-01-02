@@ -23,7 +23,7 @@ services:
     command: >
           sh -c "
                  alembic upgrade head &&
-                 poetry run uvicorn main:app --reload --port 8000"
+                 poetry run uvicorn main:app --port 8000"
 
   frontend:
     build:

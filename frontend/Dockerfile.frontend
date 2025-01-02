@@ -1,10 +1,25 @@
-# Используем официальный образ nginx
+# # Используем официальный образ nginx
+# FROM nginx:latest
+#
+# # Копируем файл конфигурации nginx
+# COPY ./frontend/nginx.conf /etc/nginx/conf.d/default.conf
+#
+# # Копируем статические файлы приложения React
+# COPY ./frontend /usr/share/nginx/html
+#
+# # Открываем порт 80
+# EXPOSE 80
+#
+# # Запускаем Nginx
+# CMD ["nginx", "-g", "daemon off;"]
+
+# Используем официальный образ Nginx
 FROM nginx:latest
 
 # Копируем файл конфигурации nginx
 COPY ./frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Копируем статические файлы приложения React
+# Копируем все статические файлы приложения React в директорию Nginx
 COPY ./frontend /usr/share/nginx/html
 
 # Открываем порт 80
