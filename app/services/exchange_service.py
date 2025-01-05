@@ -62,16 +62,3 @@ class ExchangeService:
             amount=exchange.amount,
             converted_amount=round(exchange.amount * rate, 2),
         )
-
-    #@staticmethod
-    #def _exchange_rate_to_exchange(
-    #        exchange_rate: schemas.ExchangeRateDetailsSchema, exchange: schemas.ExchangeSchema
-    #) -> schemas.ExchangeDetailsSchema:
-#
-    #    return schemas.ExchangeDetailsSchema(
-    #        base_currency=exchange_rate.base_currency,
-    #        target_currency=exchange_rate.target_currency,
-    #        rate=exchange_rate.rate,
-    #        amount=exchange.amount,
-    #        coverted_amount=exchange.coverted_amount,
-    #    )

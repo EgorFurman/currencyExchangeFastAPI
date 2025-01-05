@@ -40,17 +40,6 @@ class DBService:
                 f'Error for getting currency: {e} with {code} from {self._currencies_repo}', exc_info=True
             )
 
-        #except ValidationError:
-        #    raise exceptions.CurrencyNotFoundError(code=code)
-
-        #try:
-        #    currency = await self._currencies_repo.read_by_code(code=code)
-        #    return schemas.CurrencyIDSchema.model_validate(currency)
-        #except ValidationError:
-        #    raise exceptions.CurrencyNotFoundError(code=code)
-        #except OperationalError as e:
-        #    raise exceptions.DatabaseAccessError(e)
-
     async def get_currencies(self) -> list[schemas.CurrencyIDSchema]:
         try:
             logger.debug(f'Getting currencies from {self._currencies_repo}')
@@ -62,12 +51,6 @@ class DBService:
             logger.error(
                 f'Error for getting currencies: {e} from {self._currencies_repo}', exc_info=True
             )
-
-        #try:
-        #    currencies = await self._currencies_repo.list()
-        #    return [schemas.CurrencyIDSchema.model_validate(currency) for currency in currencies]
-        #except OperationalError as e:
-        #    raise exceptions.DatabaseAccessError(e)
 
     async def add_currency(self, schema: schemas.CurrencySchema) -> schemas.CurrencyIDSchema:
         try:
@@ -86,14 +69,6 @@ class DBService:
                 f'Error for adding currency: {e} to {self._currencies_repo}',
                 exc_info=True
             )
-        #try:
-        #    id = await self._currencies_repo.create(schema.model_dump())
-        #    currency = await self._currencies_repo.read(id=id)
-        #    return schemas.CurrencyIDSchema.model_validate(currency)
-        #except IntegrityError:
-        #    raise exceptions.InsertAlreadyExistsCurrencyError(code=schema.code)
-        #except OperationalError as e:
-        #    raise exceptions.DatabaseAccessError(e)
 
     async def get_exchange_rate(self, base_code: str, target_code: str) -> schemas.ExchangeRateDetailsSchema:
         try:
@@ -116,17 +91,6 @@ class DBService:
                 f'Error for getting exchange rate: {e} from {self._exchange_rates_repo}',
                 exc_info=True
             )
-
-        #try:
-        #    rate = await self._exchange_rates_repo.read_by_currencies_codes(
-        #        base_currency_code=base_code, target_currency_code=target_code
-        #    )
-#
-        #    return schemas.ExchangeRateDetailsSchema.model_validate(rate)
-        #except ValidationError:
-        #    raise exceptions.ExchangeRateNotFoundError(base_code=base_code, target_code=target_code)
-        #except OperationalError as e:
-        #    raise exceptions.DatabaseAccessError(e)
 
     async def get_exchange_rates(self) -> list[schemas.ExchangeRateDetailsSchema]:
         try:

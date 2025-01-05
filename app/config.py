@@ -17,8 +17,6 @@ class DBSettings(BaseSettings):
     POSTGRES_HOST: str
     POSTGRES_PORT: int
 
-    MODE: str
-
     @property
     def database_url(self):
         return f'''postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}'''

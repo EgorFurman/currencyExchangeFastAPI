@@ -49,6 +49,3 @@ async def update_exchange_rate(
     return await service.upd_exchange_rate(schemas.ExchangeRateCodesSchema(
         base_currency_code=base_code, target_currency_code=target_code, rate=rate)
     )
-
-
-    #return f'{codes}, {rate}'

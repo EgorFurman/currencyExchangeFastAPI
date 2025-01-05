@@ -17,4 +17,3 @@ async def get_exchange(
 ) -> schemas.ExchangeDetailsSchema:
 
     return await service.convert(exchange)
-    #return exchange
