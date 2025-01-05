@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const host = "http://185.221.152.93:8000";
+    const host = "http://${process.env.REACT_APP_SERVER_IP}:8000";
 
     // Fetch the list of currencies and populate the select element
     function requestCurrencies() {
